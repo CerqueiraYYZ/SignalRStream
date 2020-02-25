@@ -24,7 +24,7 @@ namespace SignalRR
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseKestrel();
-                    webBuilder.UseUrls("http://localhost:5000", "http://192.168.11.71:5000");
+                    webBuilder.UseUrls("http://localhost:5001", "http://192.168.11.71:5001");
                     webBuilder.ConfigureLogging(logging =>
                      {
                          logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Debug);

@@ -44,14 +44,14 @@ namespace SignalRWebTransactions
             this._TaskCompleteion.SetResult(true);
         }
 
-        public async Task<(string,bool)> WaitAsync()
+        public async Task<string> WaitAsync()
         {
             await Task.WhenAny(_TaskCompleteion.Task, Task.Delay(60000)); // blocking wait until event occurs or timeout
             lock (_sSubscribers)
             {
                 _sSubscribers.Remove(this);
             }
-            return (this._Message,true);
+            return this._Message;
         }
     }
 }

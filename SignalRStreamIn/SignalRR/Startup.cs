@@ -41,7 +41,7 @@ namespace SignalRR
                 builder =>
                 {
                     builder.AllowAnyMethod().AllowAnyHeader()
-                           .WithOrigins("http://localhost:5000", "http://192.168.11.71:5000")
+                           .WithOrigins("http://localhost:5001", "http://192.168.11.71:5001")
                            .AllowCredentials();
                 }));
         }

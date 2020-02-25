@@ -18,19 +18,12 @@ namespace SignalRWebTransactions.Controllers
         public async Task<IActionResult> DoLongPolling()
         {
             SimpleLongPolling lp = new SimpleLongPolling("sample-channel");
+            var message = await lp.WaitAsync();
 
-
-            while (true)
-            {
-                (var message, var recursive) = await lp.WaitAsync();
-
-                      return StatusCode(200, new ObjectResult(new { Message = (message != null ? message : "Long polling timeout!") }));
-
-            }
-
+            return new ObjectResult(new { Message = (message ?? "Long polling timeout!") });
         }
 
-       // ----original
+        // ----original
         //public async Task<IActionResult> DoLongPolling()
         //{
         //    SimpleLongPolling lp = new SimpleLongPolling("sample-channel");
