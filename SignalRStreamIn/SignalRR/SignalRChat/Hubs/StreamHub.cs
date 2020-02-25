@@ -10,12 +10,42 @@ namespace SignalRR.SignalRChat.Hubs
 {
     public class StreamHub : Hub
     {
+
+        //static Channel<int> channel;
+        private static int Count = 0;
+        public static Channel<int> channelMain = null;
+
         #region snippet1
         public ChannelReader<int> DelayCounter(int delay)
         {
+
+            //if (channelMain == null) {
+
             var channel = Channel.CreateUnbounded<int>();
-            _ = WriteItems(channel.Writer, 20, delay);
-            return channel.Reader;
+            channelMain = channel;
+            _ = WriteItems(channelMain.Writer, 20, delay);
+
+            //}
+
+            return channelMain.Reader;
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            Count++;
+            base.OnConnectedAsync();
+
+
+            Clients.All.SendAsync("updateCount", Count);
+            return Task.CompletedTask;
+        }
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            Count--;
+            base.OnDisconnectedAsync(exception);
+            
+            Clients.All.SendAsync("updateCount", Count);
+            return Task.CompletedTask;
         }
 
         private async Task WriteItems(ChannelWriter<int> writer, int count, int delay)
